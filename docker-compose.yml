@@ -1,0 +1,49 @@
+web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 froide.wsgi
+    links:
+     - db
+     - broker
+     - search
+     - worker
+    ports:
+     - "8000:8000"
+    volumes:
+        - /srv/fragdenstaat.de/logs:/var/log
+    environment:
+        - C_FORCE_ROOT=true
+        - DJANGO_SETTINGS_MODULE=fragdenstaat_de.settings
+worker:
+    build: .
+    command: celery -A froide worker -Q emailfetch,celery -B -l INFO --logfile=/var/log/celery.log
+    links:
+        - broker
+        - db
+    volumes:
+        - /srv/fragdenstaat.de/logs/worker:/var/log
+    environment:
+        - C_FORCE_ROOT=true
+
+db:
+    image: postgres:9.4
+    expose:
+        - "5432"
+    volumes:
+        - /srv/fragdenstaat.de/db:/var/lib/postgresql/data
+        - /srv/fragdenstaat.de/logs/postgresql:/var/log
+broker:
+    image: tutum/rabbitmq
+    expose:
+        - "5672"
+search:
+    image: elasticsearch
+    volumes:
+      - /srv/fragdenstaat.de/search:/usr/share/elasticsearch/data
+      - /srv/fragdenstaat.de/logs/elasticsearch:/var/log
+
+email:
+    build: email/
+    expose:
+        - "25"
+        - "143"
+        - "587"

@@ -1,0 +1,6 @@
+[submodule "froide"]
+	path = froide
+	url = /Users/sw/Sites/froide/froide/.git
+[submodule "fragdenstaat_de"]
+	path = fragdenstaat_de
+	url = /Users/sw/Sites/froide/fragdenstaat_de/.git
