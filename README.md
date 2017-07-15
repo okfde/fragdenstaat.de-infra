@@ -1,5 +1,7 @@
 # FragDenStaat.de Infra
 
+**Note: this repo was a try to deploy with Docker. [Current FragDenStaat.de deployment is done using ansible.](https://github.com/okfde/fragdenstaat.de-ansible)**
+
 Checkout recursively or initialise and update the submodules.
 
 Install `docker` and `docker-compose`.
